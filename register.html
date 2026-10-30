@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Register · Smart Campus{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="eyebrow">STUDENT ACCOUNT</div>
+  <h1>Create your account</h1>
+  <p class="muted">Register to submit and track college complaints.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Full name</label>
+    <input name="name" required maxlength="100" autocomplete="name" placeholder="Your full name">
+    <label>College email</label>
+    <input type="email" name="email" required maxlength="150" autocomplete="email" placeholder="you@college.edu">
+    <label>Password (minimum 8 characters)</label>
+    <input type="password" name="password" required minlength="8" autocomplete="new-password" placeholder="Create a password">
+    <button class="btn btn-primary full" type="submit">Create account</button>
+  </form>
+  <p class="muted center">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+</section>
+{% endblock %}
