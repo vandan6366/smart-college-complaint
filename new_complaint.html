@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}New Complaint · Smart Campus{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">STUDENT PORTAL</div><h1>Submit a complaint</h1><p class="muted">Provide enough detail so the right team can help.</p></div>
+  <a class="btn btn-outline" href="{{ url_for('student_dashboard') }}">← Back</a>
+</div>
+<section class="panel form-panel">
+  <form method="post" class="form">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Complaint title *</label>
+    <input name="title" required maxlength="150" placeholder="e.g. Wi-Fi not working in Block B">
+    <label>Category *</label>
+    <select name="category" required>
+      <option value="">Choose a category</option>
+      {% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}
+    </select>
+    <label>Priority</label>
+    <select name="priority"><option>Normal</option><option>Low</option><option>High</option></select>
+    <label>Description *</label>
+    <textarea name="description" required rows="6" maxlength="5000" placeholder="Describe the issue, location and when it happened..."></textarea>
+    <p class="hint">Your complaint is visible to the college administrator. Do not include passwords or unnecessary sensitive personal information.</p>
+    <button class="btn btn-primary" type="submit">Submit complaint</button>
+  </form>
+</section>
+{% endblock %}

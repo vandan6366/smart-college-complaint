@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard · Smart Campus{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">STUDENT PORTAL</div><h1>Your complaints</h1><p class="muted">Submit an issue and follow its progress.</p></div>
+  <a class="btn btn-primary" href="{{ url_for('new_complaint') }}">＋ New complaint</a>
+</div>
+<div class="stats">
+  <div class="stat"><span>Total complaints</span><strong>{{ counts.total }}</strong></div>
+  <div class="stat"><span>Open / pending</span><strong>{{ counts.pending }}</strong></div>
+  <div class="stat"><span>Resolved</span><strong>{{ counts.resolved }}</strong></div>
+</div>
+<section class="panel">
+  <div class="panel-heading"><h2>Complaint history</h2></div>
+  {% if complaints %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tracking ID</th><th>Complaint</th><th>Department</th><th>Priority</th><th>Status</th><th>Submitted</th></tr></thead>
+    <tbody>
+    {% for c in complaints %}
+      <tr>
+        <td><strong>{{ c.tracking_code }}</strong></td>
+        <td><strong>{{ c.title }}</strong><small class="cell-sub">{{ c.category }}</small><small class="cell-sub">{{ c.description }}</small>
+          {% if c.admin_remarks %}<div class="remarks"><b>Admin update:</b> {{ c.admin_remarks }}</div>{% endif %}
+        </td>
+        <td>{{ c.department }}</td>
+        <td><span class="priority priority-{{ c.priority|lower }}">{{ c.priority }}</span></td>
+        <td><span class="status status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td>
+        <td>{{ c.created_at.strftime('%d %b %Y') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+    <div class="empty"><div class="empty-icon">📬</div><h3>No complaints yet</h3><p class="muted">Use “New complaint” to report a campus issue.</p></div>
+  {% endif %}
+</section>
+{% endblock %}
