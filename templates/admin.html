@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard · Smart Campus{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">ADMINISTRATION</div><h1>Complaint management</h1><p class="muted">Review reports, update status and leave remarks for students.</p></div>
+</div>
+<div class="stats">
+  <div class="stat"><span>Total complaints</span><strong>{{ counts.total }}</strong></div>
+  <div class="stat"><span>Open / pending</span><strong>{{ counts.pending }}</strong></div>
+  <div class="stat"><span>Resolved</span><strong>{{ counts.resolved }}</strong></div>
+</div>
+<section class="panel">
+  <div class="panel-heading filter-heading">
+    <h2>All complaints</h2>
+    <form method="get" class="filter-form">
+      <label for="status">Filter status</label>
+      <select id="status" name="status" onchange="this.form.submit()">
+        <option value="">All statuses</option>
+        {% for s in statuses %}<option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+      </select>
+    </form>
+  </div>
+  {% if complaints %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tracking ID / Student</th><th>Complaint details</th><th>Department / Priority</th><th>Status & admin update</th></tr></thead>
+    <tbody>
+    {% for c in complaints %}
+      <tr>
+        <td><strong>{{ c.tracking_code }}</strong><small class="cell-sub">{{ c.student.name }}</small><small class="cell-sub">{{ c.student.email }}</small><small class="cell-sub">{{ c.created_at.strftime('%d %b %Y, %I:%M %p') }}</small></td>
+        <td><strong>{{ c.title }}</strong><small class="cell-sub">{{ c.category }}</small><p class="description-cell">{{ c.description }}</p></td>
+        <td>{{ c.department }}<br><span class="priority priority-{{ c.priority|lower }}">{{ c.priority }}</span></td>
+        <td class="update-cell">
+          <form method="post" action="{{ url_for('update_complaint', complaint_id=c.id) }}" class="form compact-form">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            <label>Status</label>
+            <select name="status">
+              {% for s in statuses %}<option value="{{ s }}" {% if c.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+            </select>
+            <label>Remarks for student</label>
+            <textarea name="admin_remarks" rows="2" maxlength="2000" placeholder="Optional update">{{ c.admin_remarks or '' }}</textarea>
+            <button class="btn btn-primary btn-small" type="submit">Save update</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% else %}
+    <div class="empty"><div class="empty-icon">📭</div><h3>No complaints found</h3><p class="muted">New submissions will appear here.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

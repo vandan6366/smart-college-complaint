@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Login · Smart Campus{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <div class="eyebrow">WELCOME BACK</div>
+  <h1>College complaint portal</h1>
+  <p class="muted">Log in to submit complaints or manage campus issues.</p>
+  <form method="post" class="form">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Email address</label>
+    <input type="email" name="email" required autocomplete="email" placeholder="you@college.edu">
+    <label>Password</label>
+    <input type="password" name="password" required autocomplete="current-password" placeholder="Your password">
+    <button class="btn btn-primary full" type="submit">Log in</button>
+  </form>
+  <p class="muted center">New student? <a href="{{ url_for('register') }}">Create an account</a></p>
+  <div class="demo-note"><strong>Demo admin:</strong> admin@college.edu<br><strong>Password:</strong> ChangeMe123!<br><small>For local testing only. Change it before real use.</small></div>
+</section>
+{% endblock %}

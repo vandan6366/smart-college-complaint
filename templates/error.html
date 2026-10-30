@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} · Smart Campus{% endblock %}
+{% block content %}
+<section class="auth-card center">
+  <div class="eyebrow">ERROR {{ code }}</div><h1>Something went wrong</h1><p class="muted">{{ message }}</p><a class="btn btn-primary" href="{{ url_for('index') }}">Go to home</a>
+</section>
+{% endblock %}
